@@ -15,16 +15,14 @@
 class myplace (
     $install_dir = $myplace::params::install_dir,
     $backup_existing = $myplace::params::backup_existing,
-    $version     = $myplace::params::version
+    $version     = $myplace::params::version,
     $source_url  = $myplace::params::source_url
 ) inherits ::myplace::params {
 #   require apache
 #   require php
 
-   anchor { 'myplace::begin' } ->
-   class { '::myplace::install' } ->
-   class { '::myplace::config' } ->
-   class { '::myplace::service'} ->
-   anchor { 'myplace::end' }
+   class { '::myplace::install': }
+#   class { '::myplace::config' } ->
+#   class { '::myplace::service'} ->
 }
 

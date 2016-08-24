@@ -2,10 +2,6 @@ class myplace::install inherits myplace {
 	if ! defined(Class['myplace::params']) {
 	    fail('You must include the myplace::params class before this')
 	}
-	
-	file { "${install_dir}" :
-	    ensure => 'directory'
-    }
     
     if ( $backup_existing ) {
         $source_dir = $install_dir
@@ -15,22 +11,23 @@ class myplace::install inherits myplace {
             ensure => 'directory',
             source => "file://${source_dir}",
             recurse => true,
-            before => File[$source_dir]   
+            before => File['deleteold']   
         }
-        file { 'removeprevious': 
-            path => "${source_dir}",
-            ensure => 'absent',
-            purge => true,
-            recurse => true,
-            force => true            
-        }
+    }
+
+    file { "deleteold" :
+	path => $install_dir, 
+	ensure => 'directory',
+        purge => true,
+        recurse => true,
+        before => File['tempdir']
     }
     
     $tempdir = "/tmp/myplace"
     $temppackage = "${tempdir}/myplace.tar.gz"
     
     file { "tempdir" : 
-        path => $tempdir
+        path => $tempdir,
         ensure => 'directory',
         before => File['installpackage']
     }
@@ -42,13 +39,13 @@ class myplace::install inherits myplace {
         source => $source_url,
         path => "${temppackage}",
         ensure => 'file',
-#        before => Exec["expandtarball"]
+        before => Exec["expandtarball"]
     }
     
     exec { "expandtarball": 
-        command => "tar -xzvf ${temppackage}",
-        cwd => "${install_dir}",
-        creates => "${install_dir}"
+	path => "/bin",
+        command => "tar -xzvf ${temppackage} -C ${install_dir}",
+        cwd => "${tempdir}",
         require => [
             File["tempdir"],
             File["installpackage"]
