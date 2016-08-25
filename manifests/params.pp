@@ -1,4 +1,5 @@
 class myplace::params {
+    $url            =   "http://localhost"
     $install_dir    =   undef
     $data_dir       =   undef
     $backup_existing=   true

@@ -13,6 +13,7 @@
 #include vcsrepo
 
 class myplace (
+	$url			=	$myplace::params::url,
     $install_dir 	=	$myplace::params::install_dir,
 	$data_dir		= 	$myplace::params::data_dir,
     $backup_existing= 	$myplace::params::backup_existing,
