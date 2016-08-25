@@ -13,10 +13,14 @@
 #include vcsrepo
 
 class myplace (
-    $install_dir = $myplace::params::install_dir,
-    $backup_existing = $myplace::params::backup_existing,
-    $version     = $myplace::params::version,
-    $source_url  = $myplace::params::source_url
+    $install_dir 	=	$myplace::params::install_dir,
+	$data_dir		= 	$myplace::params::data_dir,
+    $backup_existing= 	$myplace::params::backup_existing,
+    $version     	= 	$myplace::params::version,
+    $source_url  	= 	$myplace::params::source_url,
+    $db				= 	$myplace::params::dbname,
+	$dbuser			= 	$myplace::params::dbuser,
+	$dbpass			=	$myplace::params::dbpass
 ) inherits ::myplace::params {
 #   require apache
 #   require php
