@@ -21,13 +21,20 @@ class myplace (
     $source_url  	= 	$myplace::params::source_url,
     $db				= 	$myplace::params::dbname,
 	$dbuser			= 	$myplace::params::dbuser,
-	$dbpass			=	$myplace::params::dbpass
+	$dbpass			=	$myplace::params::dbpass,
+    $install                    =       false
 ) inherits ::myplace::params {
 #   require apache
 #   require php
-
-   class { '::myplace::install': }
-#   class { '::myplace::config' } ->
-#   class { '::myplace::service'} ->
+    if $install {
+        notice('Installing Myplace Code Base')
+        class { '::myplace::install': }
+#        class { '::myplace::config' } ->
+#        class { '::myplace::service'} ->
+    } else {
+	package { 'subversion':
+            ensure => 'present'
+        }
+    }
 }
 
