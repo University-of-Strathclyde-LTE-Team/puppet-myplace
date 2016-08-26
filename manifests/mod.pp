@@ -1,15 +1,16 @@
 # Class Myplace Module Installer
 
 include vcsrepo
-define myplace::mod (
+define myplace::mod  (
     $install_dir    =   false,   # If we need to put this somewhere special
     $version        =   undef,   # Version number or trunk
-    $production     =   true,    # Use Tagged version
     $source_base    =   'http://svn.strath.ac.uk/repos/moodle/plugins',
-
-    $basicauthusername = undef,
-    $basicauthpassword = undef
+    $username       =   undef,
+    $password       =   undef
 ) {
+    include myplace
+    include myplace::modparams
+
     if ! defined(Class['myplace']) {
         fail('You must include the Myplace base class before using any myplace defined resources')
     }
@@ -57,8 +58,8 @@ define myplace::mod (
         ensure => present,
         provider => svn,
         source => $source_url,
-        basic_auth_username => "${basicauthusername}",
-        basic_auth_password => "${basicauthpassword}"
+        basic_auth_username => "${username}",
+        basic_auth_password => "${password}"
        }
     } else {
         vcsrepo { $mod_dir:

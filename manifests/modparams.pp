@@ -1,0 +1,3 @@
+class myplace::modparams {
+
+}

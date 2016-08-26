@@ -13,7 +13,6 @@
 #include vcsrepo
 
 class myplace (
-    $install        =   false,
 	$url			=	$myplace::params::url,
     $install_dir 	=	$myplace::params::install_dir,
 	$data_dir		= 	$myplace::params::data_dir,
@@ -24,16 +23,13 @@ class myplace (
 	$dbuser			= 	$myplace::params::dbuser,
 	$dbpass			=	$myplace::params::dbpass
 ) inherits ::myplace::params {
-    if $install {
-        notice("Installing Myplace Code Base (${environment})")
-        $installer = "::myplace::install::${environment}"
+    notice("Installing Myplace Code Base (${environment})")
+    $installer = "::myplace::install::${environment}"
+    notice("Using installer ${installer}")
+    class { $installer: }
 #        class { '::myplace::install': }
 #        class { '::myplace::config' } ->
 #        class { '::myplace::service'} ->
-    } else {
-	    package { 'subversion':
-            ensure => 'present'
-        }
-    }
+	    
 }
 
