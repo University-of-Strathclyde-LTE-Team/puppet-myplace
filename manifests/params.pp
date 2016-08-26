@@ -1,7 +1,7 @@
 class myplace::params {
-    $url            =   "http://localhost"
-    $install_dir    =   undef
-    $data_dir       =   undef
+    $url            =   'http://classes.myplace.strath.ac.uk'
+    $install_dir    =   '/moodle/web'
+    $data_dir       =   '/moodle/data
     $backup_existing=   true
     $backup_suffix  =   '.old'
     $version        =   undef
