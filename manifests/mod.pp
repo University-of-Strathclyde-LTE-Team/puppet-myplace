@@ -15,9 +15,6 @@ define myplace::mod  (
         fail('You must include the Myplace base class before using any myplace defined resources')
     }
 
-    notice ("Version: ${version}")    
-    #$source_base ='svn://svn.strath.ac.uk/repos/moodle/plugins'
-
     $mod = $name
     $base_dir = $::myplace::install_dir
     if ! $base_dir {
@@ -28,14 +25,17 @@ define myplace::mod  (
     # e.g. mod-strathcom, block-attendance
 
     $modinfo = split($mod, '-')
-        
-        $modtype = $modinfo[0]
-        $modname = $modinfo[1]
-
+    $modtype = $modinfo[0]
+    $modname = $modinfo[-1]
+    
     if ! $install_dir {       
-        $mod_dir = "${base_dir}/${modtype}/${modname}"
+        $nomodname = $modinfo[0,-2]
+        $modpath = join($nomodname,"/")
+
+        $mod_dir = "${base_dir}/${modpath}/${modname}"
+        
     } else {
-        $mod_dir = "${base_dir}/${install_dir}"
+        $mod_dir = "${base_dir}/${install_dir}" 
     }
     
     if $version == 'trunk' {
@@ -43,17 +43,25 @@ define myplace::mod  (
     } elsif ! $version {
            fail("A version (or 'trunk') must be provided")
     } else {
-        if $production {
+        if $environment=="production" {
             $source_url = "${source_base}/${name}/tags/${version}"
         } else {
-            $source_url = "${source_base}/${name}/branches/${version}"
+            $hasv = $version[0,1]
+            if $hasv  != 'v' {
+                $vnum = floor($version)
+            } else {
+                $vnum = floor($version[1,-1])
+            }
+            $vstring = "v${vnum}"            
+            $source_url = "${source_base}/${name}/branches/${vstring}"
         } 
     }
-   
+    notice("Mod: ${mod}")
+    notice ("Version: ${version}")   
     notice("Source URL: ${source_url}")
     notice("Install Location: ${mod_dir}")
 
-    if $basicauthusername {
+    if $username {
         vcsrepo { $mod_dir:
         ensure => present,
         provider => svn,

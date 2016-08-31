@@ -26,7 +26,8 @@ class myplace (
     notice("Installing Myplace Code Base (${environment})")
     $installer = "::myplace::install::${environment}"
     notice("Using installer ${installer}")
-    class { $installer: }
+    class { $installer: }->
+    class { '::myplace::config': }
 #        class { '::myplace::install': }
 #        class { '::myplace::config' } ->
 #        class { '::myplace::service'} ->
