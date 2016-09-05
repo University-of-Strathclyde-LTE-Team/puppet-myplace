@@ -5,8 +5,8 @@ define myplace::mod  (
     $install_dir    =   false,   # If we need to put this somewhere special
     $version        =   undef,   # Version number or trunk
     $source_base    =   'http://svn.strath.ac.uk/repos/moodle/plugins',
-    $username       =   undef,
-    $password       =   undef
+    $username       =   'igs03102',
+    $password       =   'c253Agey'
 ) {
     include myplace
     include myplace::modparams
@@ -31,8 +31,18 @@ define myplace::mod  (
     if ! $install_dir {       
         $nomodname = $modinfo[0,-2]
         $modpath = join($nomodname,"/")
-
-        $mod_dir = "${base_dir}/${modpath}/${modname}"
+        $rewritemodpath = $modtype ? {
+            'assignfeedback' => 'assign/feedback',
+            'assignsubmission' => 'assign/submission',
+            'block' => 'blocks',
+            'courseformat' => 'course/format',
+            default => false
+        }
+        if ! $rewritemodpath {
+            $mod_dir = "${base_dir}/${modpath}/${modname}"
+        } else {
+            $mod_dir = "${base_dir}/${rewritemodpath}/${modname}"
+        }
         
     } else {
         $mod_dir = "${base_dir}/${install_dir}" 

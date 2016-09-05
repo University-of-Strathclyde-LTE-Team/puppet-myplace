@@ -6,7 +6,11 @@ class myplace::params {
     $backup_suffix  =   '_old'
     $version        =   undef
     $source_url     =   undef
+    $dbhost         =   'localhost'
+    $dbport         =   3306
+    $dbsocket       =   '/var/run/mysqld/mysqld.sock'
     $dbname         =   undef   
     $dbuser         =   undef
     $dbpass         =   undef
+
 }

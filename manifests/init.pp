@@ -19,18 +19,17 @@ class myplace (
     $backup_existing= 	$myplace::params::backup_existing,
     $version     	= 	$myplace::params::version,
     $source_url  	= 	$myplace::params::source_url,
+    $dbhost         =   $myplace::params::dbhost,
     $db				= 	$myplace::params::dbname,
 	$dbuser			= 	$myplace::params::dbuser,
-	$dbpass			=	$myplace::params::dbpass
+	$dbpass			=	$myplace::params::dbpass,
+	$dbsocket       =   $myplace::params::dbsocket
 ) inherits ::myplace::params {
     notice("Installing Myplace Code Base (${environment})")
     $installer = "::myplace::install::${environment}"
     notice("Using installer ${installer}")
-    class { $installer: }->
+    class { $installer: } ->
     class { '::myplace::config': }
-#        class { '::myplace::install': }
-#        class { '::myplace::config' } ->
-#        class { '::myplace::service'} ->
 	    
 }
 

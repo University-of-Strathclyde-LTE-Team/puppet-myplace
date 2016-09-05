@@ -8,17 +8,17 @@ class myplace::install::development inherits myplace::install {
     
     notice("Installing Development Environment")
     package { 'subversion':
-            ensure => 'present'
-    }
+        ensure => 'present'
+    } ->
     # Clone moodle
     vcsrepo { $install_dir :
+        require => Package['subversion'],
         ensure => present,
         provider => $sourceprovider,
         source => $moodlesource,
-        revision => $sourcebranch,
-        before => Class['myplace::install::developmentmodules']
-    }   
-
+        revision => $sourcebranch
+#        before => Class['myplace::install::developmentmodules']
+    } ->
     class { 'myplace::install::developmentmodules': }
 }
 
